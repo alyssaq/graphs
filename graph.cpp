@@ -29,8 +29,7 @@ void Graph::BFS(int s) {
 
   while (!queue.empty()) {
     // Dequeue a vertex from queue and print it
-    s = queue.front();
-    cout << s << " ";
+    cout << queue.front() << " ";
     queue.pop();
 
     // Get all adjacent vertices of the dequeued vertex s
