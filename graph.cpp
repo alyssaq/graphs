@@ -34,8 +34,7 @@ void Graph::BFS(int s) {
     queue.pop();
 
     // Get all adjacent vertices of the dequeued vertex s
-    // If a adjacent has not been visited, then mark it visited
-    // and enqueue it
+    // If a adjacent has not been visited, then mark it visited and enqueue it
     for (vciter = adj_[s].begin(); vciter != adj_[s].end(); ++vciter) {
       if (!visited[*vciter]) {
         visited[*vciter] = true;
