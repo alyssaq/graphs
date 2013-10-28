@@ -10,6 +10,7 @@ one for each vertex in the graph
 #define _GRAPH_H_
 
 #include <vector>
+#include <string>
 
 struct EdgeNode {
   int nodeIdx_;     //adjacency info
@@ -25,7 +26,7 @@ class Graph {
  public:
   Graph(int numVertices);  // Constructor
   void addEdge(int x, int y, int weight); // function to add an edge to graph
-  void BFS(int src);  // prints BFS traversal from a given source src
+  std::string BFS(int src);  // prints BFS traversal from a given source src
 };
 
 #endif

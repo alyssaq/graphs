@@ -11,8 +11,9 @@ int main()
   g.addEdge(2, 3);
   g.addEdge(3, 3);
 
-  cout << "Following is Breadth First Traversal (starting from vertex 2) \n";
-  g.BFS(2);
+  std::cout << "Following is Breadth First Traversal (starting from vertex 2) \n";
+  std::string str = g.BFS(2);
+  std::cout << str << std::endl;
 
   return 0;
 }
