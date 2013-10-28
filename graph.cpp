@@ -28,12 +28,11 @@ std::string Graph::BFS(int src) {
   queue.push(src);
 
   while (!queue.empty()) {
-    // Dequeue a vertex from queue and print it
     sstream << queue.front() << " ";
     queue.pop();
 
-    // Get all adjacent nodes of the dequeued vertex s
-    // If a adjacent has not been visited, then mark it visited and enqueue it
+    // Get all adjacent nodes of the dequeued node src
+    // If an adjacent has not been visited, then mark it visited and enqueue it
     for (vciter = adj_[src].begin(); vciter != adj_[src].end(); ++vciter) {
       if (!visited[vciter->nodeIdx_]) {
         visited[vciter->nodeIdx_] = true;
