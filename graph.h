@@ -1,7 +1,9 @@
 /*
-Adjacency list representation for sparse directed graphs.
-Representation consists of a vector of pointers one, 
-one for each vertex in the graph
+Adjacency list representation for sparse directed graphs with weights.
+Representation consists of a vector of vectors of EdgeNodes, 
+Lists may also be used.
+Each index in the vector represents a node/vertex
+A node points to a vector of EdgeNode to indicate an edge to another node.
 
 @author: Alyssa Quek 
 */
@@ -13,20 +15,20 @@ one for each vertex in the graph
 #include <string>
 
 struct EdgeNode {
-  int nodeIdx_;     //adjacency info
+  int nodeIdx_;  //adjacency info
   int weight_;   //edge weight
 
   EdgeNode(int node, int weight) : nodeIdx_(node), weight_(weight) {};
 };
 
 class Graph {
-  int numVertices_;    // No. of vertices
+  int numNodes_;    
   std::vector<std::vector<EdgeNode> > adj_;
 
  public:
-  Graph(int numVertices);  // Constructor
-  void addEdge(int x, int y, int weight); // function to add an edge to graph
-  std::string BFS(int src);  // prints BFS traversal from a given source src
+  Graph(int numNodes);  
+  void addEdge(int x, int y, int weight);
+  std::string BFS(int src);  // BFS traversal from a given source 
 };
 
 #endif
