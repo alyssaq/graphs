@@ -2,7 +2,7 @@
 // Driver program to test methods of graph class
 int main()
 {
-  // Create a graph given in the above diagram
+
   Graph g(4);
   g.addEdge(0, 1);
   g.addEdge(0, 2);

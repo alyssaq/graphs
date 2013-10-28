@@ -10,9 +10,9 @@ So timeless, so beautiful...
     > sudo ports install boost
 
 Note that on Mac, the boost header files are located at: /opt/local/include/boost   
-3) To compile a cpp file with boost:   
+3) To compile a cpp file and include boost library .hpp files, use the -I flag:   
 
-    > g++ main.cpp -I/opt/local/include/
+    > g++ main.cpp -I /opt/local/include/
 
 4) To run:
 
