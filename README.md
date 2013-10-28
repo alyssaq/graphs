@@ -11,9 +11,11 @@ So timeless, so beautiful...
 
 Note that on Mac, the boost header files are located at: /opt/local/include/boost   
 3) To compile a cpp file with boost:   
+
     > g++ main.cpp -I/opt/local/include/
 
 4) To run:
+
     > ./a.out
 
 ## Viewing graphs with [GraphViz](http://www.graphviz.org/)
@@ -21,6 +23,7 @@ Note that on Mac, the boost header files are located at: /opt/local/include/boos
 Note that on Mac, graphviz is located at: /usr/local/Cellar/graphviz/   
 2) Create a [dot file](http://www.graphviz.org/doc/info/lang.html)    
 3) To create a png image from the dot file with the same filename:   
+
     > /usr/local/Cellar/graphviz/2.32.0/bin/dot -O sample.dot -T png   
 
 ## References:
