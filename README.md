@@ -20,11 +20,12 @@ Note that on Mac, the boost header files are located at: /opt/local/include/boos
 
 ## Viewing graphs with [GraphViz](http://www.graphviz.org/)
 1) Install [GraphViz](http://www.graphviz.org/) with brew or macports    
-Note that on Mac, graphviz is located at: /usr/local/Cellar/graphviz/   
-2) Create a [dot file](http://www.graphviz.org/doc/info/lang.html)    
+2) Create a [dot file](http://www.graphviz.org/doc/info/lang.html)  
+Note that on Mac, graphviz is located at: /usr/local/Cellar/graphviz/    
+You may symlink to the dot executable at: /usr/local/Cellar/graphviz/2.32.0/bin/dot   
 3) To create a png image from the dot file with the same filename:   
 
-    > /usr/local/Cellar/graphviz/2.32.0/bin/dot -O sample.dot -T png   
+    > dot -O sample.dot -T png   
 
 ## References:
 http://www-h.eng.cam.ac.uk/help/tpl/talks/C++graphs.html#Graphs   
