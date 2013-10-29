@@ -1,12 +1,24 @@
 #include <iostream>
 #include <sstream>
+#include <algorithm>
 #include <queue>
 #include <iterator>
 #include "graph.h"
 
 Graph::Graph(int numNodes) {
-  numNodes_ = numNodes;
   adj_.resize(numNodes, std::vector<EdgeNode>());
+}
+
+void Graph::clear() {
+  std::vector<std::vector<EdgeNode> >::iterator iter;
+  for (iter = adj_.begin(); iter != adj_.end(); iter++) {
+    iter->clear();
+  }
+  adj_.clear();
+}
+
+int Graph::size() const {
+  return adj_.size();
 }
  
 void Graph::addEdge(int x, int y, int weight = 1) {
@@ -14,9 +26,9 @@ void Graph::addEdge(int x, int y, int weight = 1) {
   adj_[x].push_back(edgeNode); // Add edgeNode y to x’s list.
 }
 
-std::string Graph::BFS(int src) {
+std::string Graph::BFS(int src) const {
   // Mark all the nodes as not visited
-  std::vector<bool> visited(numNodes_, false);
+  std::vector<bool> visited(adj_.size(), false);
   std::queue<int> queue; // Create a queue for BFS
   std::vector<EdgeNode>::const_iterator vciter; //iter to get all adjacent nodes
   std::ostringstream sstream;
@@ -41,4 +53,8 @@ std::string Graph::BFS(int src) {
   }
 
   return sstream.str();
+}
+
+void Graph::Dijkstra(int src) {
+
 }

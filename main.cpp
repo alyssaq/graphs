@@ -13,7 +13,10 @@ int main()
 
   std::cout << "Following is Breadth First Traversal (starting from vertex 2) \n";
   std::string str = g.BFS(2);
-  std::cout << str << std::endl;
+  std::cout << "size:" << g.size() << " - " << str << std::endl;
+
+  g.clear();
+  std::cout << "size:" << g.size() << std::endl;
 
   return 0;
 }

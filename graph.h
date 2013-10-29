@@ -21,14 +21,16 @@ struct EdgeNode {
   EdgeNode(int node, int weight) : nodeIdx_(node), weight_(weight) {};
 };
 
-class Graph {
-  int numNodes_;    
+class Graph {   
   std::vector<std::vector<EdgeNode> > adj_;
 
  public:
   Graph(int numNodes);  
+  void clear(); //empty the Graph
+  int size() const;
   void addEdge(int x, int y, int weight);
-  std::string BFS(int src);  // BFS traversal from a given source 
+  std::string BFS(int src) const;  // BFS traversal from a given source 
+  void Dijkstra(int src);    // Find shortest path with Dijkstra's algo
 };
 
 #endif
