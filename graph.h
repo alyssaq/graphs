@@ -13,6 +13,9 @@ A node points to a vector of EdgeNode to indicate an edge to another node.
 
 #include <vector>
 #include <string>
+#include <limits>
+
+static const int MAXINT = std::numeric_limits<int>::max();
 
 struct EdgeNode {
   int nodeIdx_;  //adjacency info
@@ -30,7 +33,7 @@ class Graph {
   int size() const;
   void addEdge(int x, int y, int weight);
   std::string BFS(int src) const;  // BFS traversal from a given source 
-  void Dijkstra(int src);    // Find shortest path with Dijkstra's algo
+  void Dijkstra(int src) const;    // Find shortest path with Dijkstra's algo
 };
 
 #endif

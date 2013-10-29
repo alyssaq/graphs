@@ -15,8 +15,17 @@ int main()
   std::string str = g.BFS(2);
   std::cout << "size:" << g.size() << " - " << str << std::endl;
 
-  g.clear();
-  std::cout << "size:" << g.size() << std::endl;
-
+  Graph g2(6);
+  g2.addEdge(1, 2, 2);
+  g2.addEdge(1, 4, 6);
+  g2.addEdge(1, 3, 2);
+  g2.addEdge(2, 4, 3);
+  g2.addEdge(3, 5, 6);
+  g2.addEdge(4, 5, 1);
+  g2.addEdge(4, 6, 5);
+  g2.addEdge(5, 6, 2);
+  std::cout << "size:" << g2.size() << std::endl;
+  g2.Dijkstra(1);
+  
   return 0;
 }
