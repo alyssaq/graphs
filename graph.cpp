@@ -6,9 +6,7 @@
 
 Graph::Graph(int numNodes) {
   numNodes_ = numNodes;
-  for (int i = 0; i < numNodes; i++) {
-    adj_.push_back(std::vector<EdgeNode>());
-  }
+  adj_.resize(numNodes, std::vector<EdgeNode>());
 }
  
 void Graph::addEdge(int x, int y, int weight = 1) {
