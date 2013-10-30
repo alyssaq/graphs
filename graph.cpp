@@ -2,8 +2,11 @@
 #include <sstream>
 #include <algorithm>
 #include <queue>
+#include <set>
 #include <iterator>
 #include "graph.h"
+
+typedef std::vector<EdgeNode>::const_iterator edgeNodeCiter; 
 
 Graph::Graph(int numNodes) {
   adj_.resize(numNodes, std::vector<EdgeNode>());
@@ -29,7 +32,6 @@ void Graph::addEdge(int x, int y, int weight = 1) {
 std::string Graph::BFS(int src) const {
   std::vector<bool> visited(size(), false); // All nodes not visited
   std::queue<int> queue; // Create a queue for BFS
-  std::vector<EdgeNode>::const_iterator vciter; //iter to get all adjacent nodes
   std::ostringstream sstream; //BFS string path
 
   // Mark the current node as visited and enqueue it
@@ -43,7 +45,7 @@ std::string Graph::BFS(int src) const {
 
     // Get all adjacent nodes of the dequeued node
     // If an adjacent has not been visited, then mark it visited and enqueue it
-    for (vciter = adj_[curNode].begin(); vciter != adj_[curNode].end(); ++vciter) {
+    for (edgeNodeCiter vciter = adj_[curNode].begin(); vciter != adj_[curNode].end(); ++vciter) {
       if (!visited[vciter->nodeIdx_]) {
         visited[vciter->nodeIdx_] = true;
         queue.push(vciter->nodeIdx_);
@@ -63,72 +65,59 @@ std::string vector2string(const std::vector<int>& v) {
   return sstream.str();
 }
 
-void Graph::Dijkstra(int src) const {
-  int numNodes = size();
-  std::vector<int> dists(numNodes, MAXINT);
-  std::vector<int> previous(numNodes, -1);
-  std::vector<int> nodeSet; //set of all nodes in Graph
-  for (int i = 0; i < numNodes; i++) nodeSet.push_back(i);
+int getClosestUnvisitedNode(std::vector<int> &dists, std::vector<bool> &visited) {
+  std::vector<int>::const_iterator citer = dists.begin();
+  int minNode = -1, minDist = MAXINT;
 
-  std::vector<int>::iterator iter;
-  std::vector<EdgeNode>::const_iterator vciter;
-  dists[src] = 0; //dist from src to src
-
-  while (!nodeSet.empty()) {
-    iter = std::min_element(dists.begin(), dists.end());
-    int node = iter - dists.begin() + 1; //node with smallest dist
-    std::cout << node << " " << vector2string(nodeSet) << std::endl;
-    nodeSet.erase(std::remove(nodeSet.begin(), nodeSet.end(), node), nodeSet.end());
-    std::cout << node << " " << vector2string(nodeSet) << std::endl;
-
-    if (dists[node] == MAXINT) break; //inaccessible node
-
-    for (vciter = adj_[node].begin(); vciter != adj_[node].end(); vciter++) {
-      int totalDist = dists[node] + vciter->weight_; 
-      int adjNode   = vciter->nodeIdx_;
-      if (totalDist < dists[adjNode]) {
-        dists[adjNode]    = totalDist;
-        previous[adjNode] = node;
-      }
+  for (; citer != dists.end(); citer++) {
+    int nodeIdx = citer - dists.begin();
+    if (!visited[nodeIdx] && *citer < minDist) {
+      minDist = *citer;
+      minNode = nodeIdx;
     }
   }
+  return minNode;
+}
 
-  std::cout << "dists: " << vector2string(dists) << std::endl;
-  std::cout << "prevs: " << vector2string(previous) << std::endl;
+void printPath(int node, int src, std::vector<int> &predecessor) {
+  if (predecessor[node] == -1) return;
+  if (node == src) std::cout << src << " ";
+
+  printPath(predecessor[node], src, predecessor);
+  std::cout << node << " ";
 }
 
 void Graph::Dijkstra(int src) const {
   int numNodes = size();
-  std::vector<int> dists(numNodes, MAXINT);
-  std::vector<int> previous(numNodes, -1);
-  std::vector<int> nodeSet; //set of all nodes in Graph
-  for (int i = 0; i < numNodes; i++) nodeSet.push_back(i);
+  std::set<int> nodeSet; //set of all nodes to be processed
+  std::vector<bool> visited(numNodes, false); // All nodes not visited
+  std::vector<int>  distance(numNodes, MAXINT);
+  std::vector<int>  predecessor(numNodes, -1);
 
-  std::vector<int>::iterator iter;
-  std::vector<EdgeNode>::const_iterator vciter;
-  dists[src] = 0; //dist from src to src
-
+  distance[src] = 0; //dist from src to src
+  nodeSet.insert(nodeSet.end(), src); //O(1) with iterator hint
+  
   while (!nodeSet.empty()) {
-    iter = std::min_element(dists.begin(), dists.end());
-    int node = iter - dists.begin() + 1; //node with smallest dist
-    std::cout << node << " " << vector2string(nodeSet) << std::endl;
-    nodeSet.erase(std::remove(nodeSet.begin(), nodeSet.end(), node), nodeSet.end());
-    std::cout << node << " " << vector2string(nodeSet) << std::endl;
+    int node = getClosestUnvisitedNode(distance, visited); //1st round, node = src
+    visited[node] = true;
+    nodeSet.erase(nodeSet.find(node), nodeSet.end());
 
-    if (dists[node] == MAXINT) break; //inaccessible node
-
-    for (vciter = adj_[node].begin(); vciter != adj_[node].end(); vciter++) {
-      int totalDist = dists[node] + vciter->weight_; 
+    // Loop through adjacent nodes breadth-first.
+    for (edgeNodeCiter vciter = adj_[node].begin(); vciter != adj_[node].end(); ++vciter) {
+      int totalDist = distance[node] + vciter->weight_; //accumulate shortest dist from src
       int adjNode   = vciter->nodeIdx_;
-      if (totalDist < dists[adjNode]) {
-        dists[adjNode]    = totalDist;
-        previous[adjNode] = node;
+      if (!visited[adjNode] && totalDist <= distance[adjNode]) {
+        distance[adjNode]    = totalDist; //always keep the shortest dist from src to curNode
+        predecessor[adjNode] = node;
+        nodeSet.insert(nodeSet.end(), adjNode); // O(log n)
       }
     }
   }
 
-  std::cout << "dists: " << vector2string(dists) << std::endl;
-  std::cout << "prevs: " << vector2string(previous) << std::endl;
+  //Print the shortest path from src to any other node
+  for (int i = 0; i < numNodes; i++) {
+    std::cout << "(" << src << "," << i << ") dist:" << distance[i] << ". Path:";
+    printPath(i, src, predecessor);
+    std::cout << std::endl;
+  }
 }
-
-
