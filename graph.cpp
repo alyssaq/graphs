@@ -79,45 +79,48 @@ int getClosestUnvisitedNode(std::vector<int> &dists, std::vector<bool> &visited)
   return minNode;
 }
 
-void printPath(int node, int src, std::vector<int> &predecessor) {
-  if (predecessor[node] == -1) return;
-  if (node == src) std::cout << src << " ";
-
-  printPath(predecessor[node], src, predecessor);
-  std::cout << node << " ";
-}
-
-void Graph::Dijkstra(int src) const {
+void Graph::Dijkstra(int src, shortestPathObj &dij) const {
   int numNodes = size();
   std::set<int> nodeSet; //set of all nodes to be processed
   std::vector<bool> visited(numNodes, false); // All nodes not visited
-  std::vector<int>  distance(numNodes, MAXINT);
-  std::vector<int>  predecessor(numNodes, -1);
+  dij.distance.resize(numNodes, MAXINT);
+  dij.predecessor.resize(numNodes, -1);
 
-  distance[src] = 0; //dist from src to src
+  dij.distance[src] = 0; //dist from src to src
   nodeSet.insert(nodeSet.end(), src); //O(1) with iterator hint
   
   while (!nodeSet.empty()) {
-    int node = getClosestUnvisitedNode(distance, visited); //1st round, node = src
+    int node = getClosestUnvisitedNode(dij.distance, visited); //1st round, node = src
     visited[node] = true;
     nodeSet.erase(nodeSet.find(node), nodeSet.end());
 
     // Loop through adjacent nodes breadth-first.
     for (edgeNodeCiter vciter = adj_[node].begin(); vciter != adj_[node].end(); ++vciter) {
-      int totalDist = distance[node] + vciter->weight_; //accumulate shortest dist from src
+      int totalDist = dij.distance[node] + vciter->weight_; //accumulate shortest dist from src
       int adjNode   = vciter->nodeIdx_;
-      if (!visited[adjNode] && totalDist <= distance[adjNode]) {
-        distance[adjNode]    = totalDist; //always keep the shortest dist from src to curNode
-        predecessor[adjNode] = node;
+      if (!visited[adjNode] && totalDist <= dij.distance[adjNode]) {
+        dij.distance[adjNode]    = totalDist; //always keep the shortest dist from src to curNode
+        dij.predecessor[adjNode] = node;
         nodeSet.insert(nodeSet.end(), adjNode); // O(log n)
       }
     }
   }
+}
 
-  //Print the shortest path from src to any other node
-  for (int i = 0; i < numNodes; i++) {
+//Print the shortest path from source to a destination node
+void shortestPathObj::printPath(int src, int dest) const {
+  if (predecessor[dest] == -1) return;
+  if (dest == src) std::cout << src << " ";
+
+  printPath(src, predecessor[dest]);
+  std::cout << dest << " ";
+}
+
+//Print the shortest path from src to any other node
+void shortestPathObj::print(int src) const {
+  for (int i = 0; i < distance.size(); i++) {
     std::cout << "(" << src << "," << i << ") dist:" << distance[i] << ". Path:";
-    printPath(i, src, predecessor);
+    printPath(src, i);
     std::cout << std::endl;
   }
 }

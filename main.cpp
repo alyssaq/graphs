@@ -26,7 +26,9 @@ int main()
   g2.addEdge(4, 5, 1);
   g2.addEdge(4, 6, 5);
   g2.addEdge(5, 6, 2);
-  g2.Dijkstra(1);
+  shortestPathObj dij;
+  g2.Dijkstra(1, dij);
+  dij.print(1);
 
   return 0;
 }

@@ -24,6 +24,19 @@ struct EdgeNode {
   EdgeNode(int node, int weight) : nodeIdx_(node), weight_(weight) {};
 };
 
+// Struct to store the vectors needed to print the shortest path
+struct shortestPathObj {
+  // A node's predecessor in the shortest path. -1 if non-existent
+  std::vector<int>  predecessor; 
+  // Total shortest dist from src to a node
+  std::vector<int>  distance; 
+
+  //Print the shortest path from src to any other node
+  void print(int src) const;   
+  //Print the shortest path from source to a destination node
+  void printPath(int src, int dest) const; 
+};
+
 class Graph {   
   std::vector<std::vector<EdgeNode> > adj_;
 
@@ -33,7 +46,11 @@ class Graph {
   int size() const;
   void addEdge(int x, int y, int weight);
   std::string BFS(int src) const;  // BFS traversal from a given source 
-  void Dijkstra(int src) const;    // Find shortest path with Dijkstra's algo
+
+  /* Dijkstra's algorithm: find shortest path from a given source node
+     O(E + n log n): E = numEdges, n = numNodes
+  */
+  void Dijkstra(int src, shortestPathObj &dij) const;    
 };
 
 #endif
