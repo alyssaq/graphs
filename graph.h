@@ -1,6 +1,6 @@
 /*
 Adjacency list representation for sparse directed graphs with weights.
-Representation consists of a vector of vectors of EdgeNodes, 
+Representation consists of a vector of vectors of EdgeNodes.
 Lists may also be used.
 Each index in the vector represents a node/vertex
 A node points to a vector of EdgeNode to indicate an edge to another node.
@@ -27,9 +27,9 @@ struct EdgeNode {
 // Struct to store the vectors needed to print the shortest path
 struct shortestPathObj {
   // A node's predecessor in the shortest path. -1 if non-existent
-  std::vector<int>  predecessor; 
+  std::vector<int>  predecessor_; 
   // Total shortest dist from src to a node
-  std::vector<int>  distance; 
+  std::vector<int>  distance_; 
 
   //Print the shortest path from src to any other node
   void print(int src) const;   

@@ -83,24 +83,24 @@ void Graph::Dijkstra(int src, shortestPathObj &dij) const {
   int numNodes = size();
   std::set<int> nodeSet; //set of all nodes to be processed
   std::vector<bool> visited(numNodes, false); // All nodes not visited
-  dij.distance.resize(numNodes, MAXINT);
-  dij.predecessor.resize(numNodes, -1);
+  dij.distance_.resize(numNodes, MAXINT);
+  dij.predecessor_.resize(numNodes, -1);
 
-  dij.distance[src] = 0; //dist from src to src
+  dij.distance_[src] = 0; //dist from src to src
   nodeSet.insert(nodeSet.end(), src); //O(1) with iterator hint
   
   while (!nodeSet.empty()) {
-    int node = getClosestUnvisitedNode(dij.distance, visited); //1st round, node = src
+    int node = getClosestUnvisitedNode(dij.distance_, visited); //1st round, node = src
     visited[node] = true;
     nodeSet.erase(nodeSet.find(node), nodeSet.end());
 
     // Loop through adjacent nodes breadth-first.
     for (edgeNodeCiter vciter = adj_[node].begin(); vciter != adj_[node].end(); ++vciter) {
-      int totalDist = dij.distance[node] + vciter->weight_; //accumulate shortest dist from src
+      int totalDist = dij.distance_[node] + vciter->weight_; //accumulate shortest dist from src
       int adjNode   = vciter->nodeIdx_;
-      if (!visited[adjNode] && totalDist <= dij.distance[adjNode]) {
-        dij.distance[adjNode]    = totalDist; //always keep the shortest dist from src to curNode
-        dij.predecessor[adjNode] = node;
+      if (!visited[adjNode] && totalDist <= dij.distance_[adjNode]) {
+        dij.distance_[adjNode]    = totalDist; //always keep the shortest dist from src to curNode
+        dij.predecessor_[adjNode] = node;
         nodeSet.insert(nodeSet.end(), adjNode); // O(log n)
       }
     }
@@ -109,17 +109,17 @@ void Graph::Dijkstra(int src, shortestPathObj &dij) const {
 
 //Print the shortest path from source to a destination node
 void shortestPathObj::printPath(int src, int dest) const {
-  if (predecessor[dest] == -1) return;
+  if (predecessor_[dest] == -1) return;
   if (dest == src) std::cout << src << " ";
 
-  printPath(src, predecessor[dest]);
+  printPath(src, predecessor_[dest]);
   std::cout << dest << " ";
 }
 
 //Print the shortest path from src to any other node
 void shortestPathObj::print(int src) const {
-  for (int i = 0; i < distance.size(); i++) {
-    std::cout << "(" << src << "," << i << ") dist:" << distance[i] << ". Path:";
+  for (int i = 0; i < distance_.size(); i++) {
+    std::cout << "(" << src << "," << i << ") dist:" << distance_[i] << ". Path:";
     printPath(src, i);
     std::cout << std::endl;
   }
