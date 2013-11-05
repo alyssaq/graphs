@@ -20,8 +20,17 @@ void Graph::clear() {
   adj_.clear();
 }
 
-int Graph::size() const {
+int Graph::numNodes() const {
   return adj_.size();
+}
+
+int Graph::numEdges() const {
+  std::vector<std::vector<EdgeNode> >::const_iterator citer;
+  int numEdges = 0;
+  for (citer = adj_.begin(); citer != adj_.end(); citer++) {
+    numEdges += citer->size();
+  }
+  return numEdges;
 }
  
 void Graph::addEdge(int x, int y, int weight = 1) {
@@ -29,8 +38,22 @@ void Graph::addEdge(int x, int y, int weight = 1) {
   adj_[x].push_back(edgeNode); // Add edgeNode y to x’s list.
 }
 
+struct nodeEqual : std::unary_function<EdgeNode,bool> {
+  const int &idx_;
+  nodeEqual(const int &idx) : idx_(idx) {}
+
+  bool operator()(const EdgeNode &edgeNode) const { 
+    return edgeNode.nodeIdx_ == idx_; 
+  }  
+};
+
+void Graph::removeEdge(int x, int y) {
+  std::vector<EdgeNode> &adjacentNodes = adj_[x];
+  adjacentNodes.erase(std::remove_if(adjacentNodes.begin(), adjacentNodes.end(), nodeEqual(y)), adjacentNodes.end());
+}
+
 std::string Graph::BFS(int src) const {
-  std::vector<bool> visited(size(), false); // All nodes not visited
+  std::vector<bool> visited(this->numNodes(), false); // All nodes not visited
   std::queue<int> queue; // Create a queue for BFS
   std::ostringstream sstream; //BFS string path
 
@@ -80,7 +103,7 @@ int getClosestUnvisitedNode(std::vector<int> &dists, std::vector<bool> &visited)
 }
 
 void Graph::Dijkstra(int src, shortestPathObj &dij) const {
-  int numNodes = size();
+  int numNodes = this->numNodes();
   std::set<int> nodeSet; //set of all nodes to be processed
   std::vector<bool> visited(numNodes, false); // All nodes not visited
   dij.distance_.resize(numNodes, MAXINT);

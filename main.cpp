@@ -13,7 +13,12 @@ int main()
 
   std::cout << "Following is Breadth First Traversal (starting from vertex 2) \n";
   std::string str = g.BFS(2);
-  std::cout << "(" << g.size() << " nodes) - " << str << std::endl;
+  std::cout << "(" << g.numNodes() << " nodes, " << g.numEdges() << " edges) - " << str << std::endl;
+  g.removeEdge(3, 3);
+  g.removeEdge(3, 1);
+  g.removeEdge(0, 1);
+  str = g.BFS(2);
+  std::cout << "(" << g.numNodes() << " nodes, " << g.numEdges() << " edges) - " << str << std::endl;
 
   std::cout << "Following is the shortest path (starting from vertex 1) \n";
   Graph g2(7);
