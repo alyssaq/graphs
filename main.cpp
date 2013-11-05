@@ -19,6 +19,9 @@ int main()
   g.removeEdge(0, 1);
   str = g.BFS(2);
   std::cout << "(" << g.numNodes() << " nodes, " << g.numEdges() << " edges) - " << str << std::endl;
+  g.removeNode(0);
+  std::cout << "(" << g.numNodes() << " nodes, " << g.numEdges() << " edges)" << std::endl;
+  
 
   std::cout << "Following is the shortest path (starting from vertex 1) \n";
   Graph g2(7);

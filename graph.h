@@ -47,6 +47,7 @@ class Graph {
   int numEdges() const;
   void addEdge(int x, int y, int weight);
   void removeEdge(int x, int y);
+  void removeNode(int node);
   std::string BFS(int src) const;  // BFS traversal from a given source 
 
   /* Dijkstra's algorithm: find shortest path from a given source node

@@ -50,8 +50,17 @@ struct nodeEqual : std::unary_function<EdgeNode,bool> {
 };
 
 void Graph::removeEdge(int x, int y) {
-  std::vector<EdgeNode> &adjacentNodes = adj_[x];
-  adjacentNodes.erase(std::remove_if(adjacentNodes.begin(), adjacentNodes.end(), nodeEqual(y)), adjacentNodes.end());
+  std::vector<EdgeNode> &adjNodes = adj_[x];  //erase-remove idiom
+  adjNodes.erase(std::remove_if(adjNodes.begin(), adjNodes.end(), 
+                                nodeEqual(y)), adjNodes.end());
+}
+
+void Graph::removeNode(int node) {
+  adj_.erase(adj_.begin() + node); //erase this node and all its edges
+  //Remove all the other edges from other nodes to this node of interest
+  for (int i = 0; i < adj_.size(); i++) {
+    this->removeEdge(i, node);
+  }
 }
 
 std::string Graph::BFS(int src) const {
