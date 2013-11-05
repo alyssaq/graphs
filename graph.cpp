@@ -38,6 +38,8 @@ void Graph::addEdge(int x, int y, int weight = 1) {
   adj_[x].push_back(edgeNode); // Add edgeNode y to x’s list.
 }
 
+//An EdgeNode is equal so long as the nodeIdx is the same.
+//  The weight of the edge is irrelevant.
 struct nodeEqual : std::unary_function<EdgeNode,bool> {
   const int &idx_;
   nodeEqual(const int &idx) : idx_(idx) {}
