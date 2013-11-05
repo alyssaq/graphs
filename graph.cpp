@@ -57,7 +57,7 @@ void Graph::removeEdge(int x, int y) {
 
 void Graph::removeNode(int node) {
   adj_.erase(adj_.begin() + node); //erase this node and all its edges
-  //Remove all the other edges from other nodes to this node of interest
+  //For all the other nodes, remove any edge to this removed node
   for (int i = 0; i < adj_.size(); i++) {
     this->removeEdge(i, node);
   }
